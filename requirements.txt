@@ -1,0 +1,35 @@
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+pydantic[email]==2.5.0
+
+# Database
+motor==3.3.2
+pymongo==4.6.0
+
+# Document Processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+pandas==2.1.3
+openpyxl==3.1.2
+Pillow==10.1.0
+paddleocr>=2.7.0
+paddlepaddle>=2.5.0  # or paddlepaddle-gpu for GPU support
+opencv-python>=4.8.0
+pdf2image==1.16.3
+
+# LangChain & RAG
+langchain==0.1.0
+langchain-community==0.0.10
+langchain-openai==0.0.2
+langchain-text-splitters==0.0.1
+faiss-cpu==1.7.4
+
+# OpenAI
+openai==1.6.1
+
+# Web Search (Choose based on preference)
+tavily-python==0.3.0          # Recommended (1000 free/month)
+duckduckgo-search==4.1.0      # Free alternative
+wikipedia==1.4.0               # For encyclopedia queries

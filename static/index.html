@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocBlaze - Professional Document Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-light: #818CF8;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --background: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-primary: #0F172A;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --error: #EF4444;
+            --success: #10B981;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-info .name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .user-info .email {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Auth Screen */
+        .auth-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .auth-card {
+            background: var(--surface);
+            padding: 48px;
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: var(--shadow-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .auth-logo svg {
+            width: 48px;
+            height: 48px;
+            fill: white;
+        }
+
+        .auth-header h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 32px;
+            background: var(--background);
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-secondary);
+        }
+
+        .auth-tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: var(--shadow);
+            transform: scale(1.02);
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 320px 1fr 400px;
+            gap: 24px;
+            padding: 24px 0;
+            min-height: calc(100vh - 73px);
+        }
+
+        .sidebar,
+        .chat-panel,
+        .info-panel {
+            background: var(--surface);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 24px;
+        }
+
+        /* Sidebar */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .session-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .session-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .session-item:hover {
+            background: var(--background);
+        }
+
+        .session-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow);
+        }
+
+        .session-name {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .session-meta {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        /* 🔥 NEW: Analytics Panel */
+        .analytics-panel {
+            background: var(--background);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .analytics-card {
+            background: var(--surface);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .analytics-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .analytics-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Chat Panel */
+        .chat-panel {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 121px);
+        }
+
+        .chat-header {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: var(--background);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .user .message-avatar {
+            background: var(--primary);
+            color: white;
+        }
+
+        .ai .message-avatar {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: var(--surface);
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .user .message-content {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+
+        .message-text {
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .message-sources {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+        }
+
+        .user .message-sources {
+            border-top-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* 🔥 NEW: Feedback UI */
+        .message-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 12px;
+        }
+
+        .feedback-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .feedback-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .feedback-btn:hover {
+            background: var(--background);
+            transform: scale(1.05);
+        }
+
+        .feedback-btn.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .feedback-btn.positive.active {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .feedback-btn.negative.active {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .confidence-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .confidence-high {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .confidence-medium {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+        }
+
+        .confidence-low {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+        }
+
+        .quality-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .quality-dot.high {
+            background: var(--success);
+        }
+
+        .quality-dot.medium {
+            background: var(--accent);
+        }
+
+        .quality-dot.low {
+            background: var(--error);
+        }
+
+        .regenerate-btn {
+            background: linear-gradient(135deg, var(--accent), #F59E0B);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .regenerate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Info Panel */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(79, 70, 229, 0.02);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .document-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .document-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--background);
+            border: 1px solid var(--border);
+        }
+
+        .doc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 6px;
+        }
+
+        .doc-name {
+            font-weight: 500;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .doc-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-icon {
+            padding: 10px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: var(--surface);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .alert-success {
+            background: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 16px;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-layout {
+                grid-template-columns: 280px 1fr 360px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar,
+            .info-panel {
+                display: none;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Part 2: HTML Body Structure -->
+<!-- Place this inside the <body> tag after Part 1 -->
+
+<!-- Auth Screen -->
+<div id="auth-screen">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <h2>Welcome to DocBlaze</h2>
+                <p>Professional Document Intelligence Platform</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+            </div>
+
+            <div id="auth-message"></div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="login-email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="register-username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="register-email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="register-password" placeholder="Create a password" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Main App -->
+<div id="app-screen" style="display: none;">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">D</div>
+                    <div class="logo-text">
+                        <h1>DocBlaze</h1>
+                        <p>Document Intelligence</p>
+                    </div>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="name" id="header-username"></div>
+                        <div class="email" id="header-email"></div>
+                    </div>
+                    <div class="user-avatar" id="user-avatar"></div>
+                    <button class="logout-btn" onclick="logout()">
+                        <span style="margin-right: 4px;">🚪</span> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="container">
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <!-- 🔥 NEW: Analytics Section -->
+                <div class="analytics-panel">
+                    <h3 class="section-title" style="font-size: 14px; margin-bottom: 8px;">Session Analytics</h3>
+                    <div class="analytics-grid" id="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="total-queries">0</div>
+                            <div class="analytics-label">Total Queries</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="avg-confidence">-</div>
+                            <div class="analytics-label">Avg Confidence</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="positive-feedback">0</div>
+                            <div class="analytics-label">👍 Positive</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-value" id="negative-feedback">0</div>
+                            <div class="analytics-label">👎 Negative</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sessions List -->
+                <div class="section-header">
+                    <h2 class="section-title">Sessions</h2>
+                    <button class="btn btn-primary btn-icon" onclick="createNewSession()">+</button>
+                </div>
+                <div id="session-list" class="session-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Loading sessions...
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Chat Panel -->
+            <main class="chat-panel">
+                <div class="chat-header">
+                    <h2 class="section-title" id="current-session-name">Select a session</h2>
+                </div>
+                <div id="chat-messages" class="chat-messages">
+                    <div class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <p>Upload documents and start asking questions</p>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" class="chat-input" id="chat-input"
+                        placeholder="Ask anything about your documents..." onkeypress="handleChatKeyPress(event)">
+                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                </div>
+            </main>
+
+            <!-- Info Panel -->
+            <aside class="info-panel">
+                <div class="section-header">
+                    <h2 class="section-title">Upload Documents</h2>
+                </div>
+                <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                    <div class="upload-icon">📄</div>
+                    <p style="font-weight: 500; margin-bottom: 4px;">Drop files here or click to browse</p>
+                    <p style="font-size: 12px; color: var(--text-secondary);">PDF, DOCX, Excel, CSV, Images</p>
+                    <input type="file" id="file-input" style="display: none;"
+                        accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png" onchange="uploadDocument()">
+                </div>
+
+                <div class="section-header" style="margin-top: 24px;">
+                    <h2 class="section-title">Documents</h2>
+                </div>
+                <div id="document-list" class="document-list">
+                    <div class="empty-state" style="padding: 24px;">
+                        <div class="empty-icon" style="font-size: 48px;">📁</div>
+                        <p style="font-size: 14px;">No documents uploaded</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</div>
+
+
+<!-- Part 3 will contain all JavaScript code -->
+</body>
+<script>
+    // Part 3A: JavaScript - Configuration, Authentication & Core Functions
+// Place this inside <script> tags at the end of your HTML
+
+const API_BASE = '/api';
+let authToken = localStorage.getItem('docblaze_token');
+let currentUser = null;
+let currentSession = null;
+let sessions = [];
+
+// ============================================================================
+// INITIALIZATION
+// ============================================================================
+
+window.addEventListener('DOMContentLoaded', async () => {
+    if (authToken) {
+        try {
+            await loadUser();
+            await loadSessions();
+            showApp();
+        } catch (error) {
+            localStorage.removeItem('docblaze_token');
+            showAuth();
+        }
+    } else {
+        showAuth();
+    }
+});
+
+// ============================================================================
+// SCREEN MANAGEMENT
+// ============================================================================
+
+function showAuth() {
+    document.getElementById('auth-screen').style.display = 'block';
+    document.getElementById('app-screen').style.display = 'none';
+}
+
+function showApp() {
+    document.getElementById('auth-screen').style.display = 'none';
+    document.getElementById('app-screen').style.display = 'block';
+}
+
+function switchAuthTab(tab) {
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs.forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if (tab === 'login') {
+        document.getElementById('login-form').style.display = 'block';
+        document.getElementById('register-form').style.display = 'none';
+    } else {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('register-form').style.display = 'block';
+    }
+}
+
+// ============================================================================
+// AUTHENTICATION
+// ============================================================================
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    try {
+        const response = await fetch(`${API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        if (!response.ok) throw new Error('Invalid credentials');
+
+        const data = await response.json();
+        authToken = data.token;
+        localStorage.setItem('docblaze_token', authToken);
+        currentUser = data.user;
+
+        await loadSessions();
+        showApp();
+        updateUserDisplay();
+    } catch (error) {
+        showMessage('error', error.message);
+    }
+});
+
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('register-username').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+
+    try {
+        const response = await fetch(`${API_BASE}/auth/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail);
+        }
+
+        showMessage('success', 'Account created! Please login.');
+        switchAuthTab('login');
+        document.getElementById('login-email').value = email;
+    } catch (error) {
+        showMessage('error', error.message);
+    }
+});
+
+function showMessage(type, message) {
+    const div = document.getElementById('auth-message');
+    div.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    setTimeout(() => div.innerHTML = '', 5000);
+}
+
+async function loadUser() {
+    const response = await fetch(`${API_BASE}/users/me`, {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    if (!response.ok) throw new Error('Failed to load user');
+
+    currentUser = await response.json();
+    updateUserDisplay();
+}
+
+function updateUserDisplay() {
+    const username = currentUser.username;
+    document.getElementById('header-username').textContent = username;
+    document.getElementById('header-email').textContent = currentUser.email;
+    
+    const avatar = document.getElementById('user-avatar');
+    avatar.textContent = username.charAt(0).toUpperCase();
+}
+
+function logout() {
+    if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('docblaze_token');
+        authToken = null;
+        currentUser = null;
+        currentSession = null;
+        sessions = [];
+        
+        document.getElementById('login-email').value = '';
+        document.getElementById('login-password').value = '';
+        document.getElementById('register-username').value = '';
+        document.getElementById('register-email').value = '';
+        document.getElementById('register-password').value = '';
+        
+        showAuth();
+    }
+}
+
+// ============================================================================
+// SESSION MANAGEMENT
+// ============================================================================
+
+async function loadSessions() {
+    const response = await fetch(`${API_BASE}/sessions`, {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    sessions = await response.json();
+    renderSessions();
+
+    if (sessions.length > 0 && !currentSession) {
+        await selectSession(sessions[0].session_id);
+    }
+}
+
+function renderSessions() {
+    const container = document.getElementById('session-list');
+
+    if (sessions.length === 0) {
+        container.innerHTML = '<div class="empty-state" style="padding: 24px;"><p style="font-size: 14px;">No sessions yet</p></div>';
+        return;
+    }
+
+    container.innerHTML = sessions.map(session => `
+        <div class="session-item ${session.session_id === currentSession ? 'active' : ''}" 
+             onclick="selectSession('${session.session_id}')">
+            <div class="session-name">${session.session_name}</div>
+            <div class="session-meta">
+                ${session.document_count} docs • ${new Date(session.last_active).toLocaleDateString()}
+            </div>
+        </div>
+    `).join('');
+}
+
+async function createNewSession() {
+    const response = await fetch(`${API_BASE}/sessions`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    const session = await response.json();
+    await loadSessions();
+    await selectSession(session.session_id);
+}
+
+async function selectSession(sessionId) {
+    currentSession = sessionId;
+    const session = sessions.find(s => s.session_id === sessionId);
+
+    document.getElementById('current-session-name').textContent = session.session_name;
+    renderSessions();
+
+    await loadChatHistory();
+    await loadDocuments();
+    await loadSessionAnalytics(); // 🔥 NEW: Load analytics
+}
+
+// This is Part 3A - Continue to Part 3B for Chat & Document functions
+// ============================================================================
+// PART 3B: CHAT HISTORY WITH FEEDBACK UI
+// ============================================================================
+
+async function loadChatHistory() {
+    const response = await fetch(`${API_BASE}/sessions/${currentSession}/history`, {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    const data = await response.json();
+    const container = document.getElementById('chat-messages');
+
+    if (data.history.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No messages yet</p></div>';
+        return;
+    }
+
+    container.innerHTML = data.history.map(chat => {
+        // Build sources HTML
+        let sourcesHtml = '';
+        if (chat.sources && Array.isArray(chat.sources) && chat.sources.length > 0) {
+            const sourceNames = chat.sources
+                .filter(s => s && s.filename)
+                .map(s => s.filename)
+                .join(', ');
+            
+            if (sourceNames) {
+                sourcesHtml = `
+                    <div class="message-sources">
+                        📚 Sources: ${sourceNames}
+                    </div>
+                `;
+            }
+        }
+
+        // 🔥 NEW: Build confidence badge
+        let confidenceBadge = '';
+        if (chat.confidence_score !== undefined && chat.confidence_score !== null) {
+            const score = chat.confidence_score;
+            let level = 'low';
+            let label = 'Low';
+            
+            if (score >= 0.7) {
+                level = 'high';
+                label = 'High';
+            } else if (score >= 0.4) {
+                level = 'medium';
+                label = 'Medium';
+            }
+            
+            confidenceBadge = `
+                <span class="confidence-badge confidence-${level}">
+                    <span class="quality-dot ${level}"></span>
+                    ${label} Confidence
+                </span>
+            `;
+        }
+
+        // 🔥 NEW: Build feedback buttons
+        const feedback = chat.feedback || {};
+        const feedbackHtml = `
+            <div class="message-footer">
+                <div class="feedback-buttons">
+                    <button class="feedback-btn positive ${feedback.rating === 'positive' ? 'active' : ''}" 
+                            onclick="submitFeedback('${chat.chat_id}', 'positive')"
+                            title="Helpful response">
+                        👍 ${feedback.rating === 'positive' ? 'Helpful' : ''}
+                    </button>
+                    <button class="feedback-btn negative ${feedback.rating === 'negative' ? 'active' : ''}" 
+                            onclick="submitFeedback('${chat.chat_id}', 'negative')"
+                            title="Not helpful">
+                        👎 ${feedback.rating === 'negative' ? 'Not helpful' : ''}
+                    </button>
+                    ${feedback.rating === 'negative' ? `
+                        <button class="regenerate-btn" onclick="regenerateResponse('${chat.chat_id}', \`${chat.query.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`)">
+                            🔄 Regenerate
+                        </button>
+                    ` : ''}
+                </div>
+                <div>
+                    ${confidenceBadge}
+                </div>
+            </div>
+        `;
+
+        return `
+            <div class="message user">
+                <div class="message-avatar">U</div>
+                <div class="message-content">
+                    <div class="message-text">${chat.query}</div>
+                </div>
+            </div>
+            <div class="message ai">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="message-text">${chat.response}</div>
+                    ${sourcesHtml}
+                    ${feedbackHtml}
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    container.scrollTop = container.scrollHeight;
+}
+
+// ============================================================================
+// 🔥 NEW: FEEDBACK SYSTEM
+// ============================================================================
+
+async function submitFeedback(chatId, rating) {
+    try {
+        const response = await fetch(`${API_BASE}/chats/${chatId}/feedback`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ rating })
+        });
+
+        if (!response.ok) throw new Error('Failed to submit feedback');
+
+        // Reload UI to show updated feedback
+        await loadChatHistory();
+        await loadSessionAnalytics();
+    } catch (error) {
+        console.error('Feedback error:', error);
+    }
+}
+
+async function regenerateResponse(chatId, originalQuery) {
+    const container = document.getElementById('chat-messages');
+
+    // Show loading indicator
+    container.innerHTML += '<div class="loading"><div class="spinner"></div> Regenerating with improved retrieval...</div>';
+    container.scrollTop = container.scrollHeight;
+
+    try {
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                query: originalQuery,
+                regenerate: true,
+                previous_chat_id: chatId
+            })
+        });
+
+        if (!response.ok) throw new Error('Regeneration failed');
+
+        // Reload chat history to show new response
+        await loadChatHistory();
+        await loadSessionAnalytics();
+    } catch (error) {
+        console.error('Regeneration error:', error);
+        alert('Failed to regenerate response: ' + error.message);
+        
+        // Remove loading indicator
+        const loadingElements = container.querySelectorAll('.loading');
+        if (loadingElements.length > 0) {
+            loadingElements[loadingElements.length - 1].remove();
+        }
+    }
+}
+
+// ============================================================================
+// 🔥 NEW: ANALYTICS
+// ============================================================================
+
+async function loadSessionAnalytics() {
+    if (!currentSession) return;
+
+    try {
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/analytics`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (!response.ok) return;
+
+        const data = await response.json();
+
+        // Update analytics display
+        document.getElementById('total-queries').textContent = data.total_queries || 0;
+        document.getElementById('positive-feedback').textContent = data.positive_feedback || 0;
+        document.getElementById('negative-feedback').textContent = data.negative_feedback || 0;
+
+        // Format average confidence as percentage
+        const avgConf = data.avg_confidence;
+        if (avgConf !== null && avgConf !== undefined) {
+            document.getElementById('avg-confidence').textContent = `${Math.round(avgConf * 100)}%`;
+        } else {
+            document.getElementById('avg-confidence').textContent = '-';
+        }
+    } catch (error) {
+        console.error('Failed to load analytics:', error);
+    }
+}
+
+// ============================================================================
+// SEND MESSAGE WITH FEEDBACK UI
+// ============================================================================
+
+async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const query = input.value.trim();
+
+    if (!query || !currentSession) return;
+
+    const container = document.getElementById('chat-messages');
+
+    // Display user message
+    container.innerHTML += `
+        <div class="message user">
+            <div class="message-avatar">U</div>
+            <div class="message-content">
+                <div class="message-text">${query}</div>
+            </div>
+        </div>
+    `;
+
+    input.value = '';
+    container.scrollTop = container.scrollHeight;
+
+    // Show loading indicator
+    container.innerHTML += '<div class="loading"><div class="spinner"></div> Thinking...</div>';
+    container.scrollTop = container.scrollHeight;
+
+    try {
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ query })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Remove loading indicator
+        const loadingElements = container.querySelectorAll('.loading');
+        loadingElements[loadingElements.length - 1]?.remove();
+
+        // Build sources HTML
+        let sourcesHtml = '';
+        if (data.sources && Array.isArray(data.sources) && data.sources.length > 0) {
+            const sourceNames = data.sources
+                .filter(s => s && s.filename)
+                .map(s => s.filename)
+                .join(', ');
+            
+            if (sourceNames) {
+                sourcesHtml = `
+                    <div class="message-sources">
+                        📚 Sources: ${sourceNames}
+                    </div>
+                `;
+            }
+        }
+
+        // 🔥 NEW: Build confidence badge
+        let confidenceBadge = '';
+        if (data.confidence_score !== undefined && data.confidence_score !== null) {
+            const score = data.confidence_score;
+            let level = 'low';
+            let label = 'Low';
+            
+            if (score >= 0.7) {
+                level = 'high';
+                label = 'High';
+            } else if (score >= 0.4) {
+                level = 'medium';
+                label = 'Medium';
+            }
+            
+            confidenceBadge = `
+                <span class="confidence-badge confidence-${level}">
+                    <span class="quality-dot ${level}"></span>
+                    ${label} Confidence
+                </span>
+            `;
+        }
+
+        // 🔥 NEW: Build feedback buttons for new message
+        const feedbackHtml = `
+            <div class="message-footer">
+                <div class="feedback-buttons">
+                    <button class="feedback-btn positive" 
+                            onclick="submitFeedback('${data.chat_id}', 'positive')"
+                            title="Helpful response">
+                        👍
+                    </button>
+                    <button class="feedback-btn negative" 
+                            onclick="submitFeedback('${data.chat_id}', 'negative')"
+                            title="Not helpful">
+                        👎
+                    </button>
+                </div>
+                <div>
+                    ${confidenceBadge}
+                </div>
+            </div>
+        `;
+
+        // Display AI response with feedback UI
+        container.innerHTML += `
+            <div class="message ai">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="message-text">${data.response || 'No response received'}</div>
+                    ${sourcesHtml}
+                    ${feedbackHtml}
+                </div>
+            </div>
+        `;
+
+        container.scrollTop = container.scrollHeight;
+        
+        // Reload sessions and analytics
+        await loadSessions();
+        await loadSessionAnalytics();
+        
+    } catch (error) {
+        console.error('Error:', error);
+        
+        // Remove loading indicator
+        const loadingElements = container.querySelectorAll('.loading');
+        loadingElements[loadingElements.length - 1]?.remove();
+
+        // Display error message
+        container.innerHTML += `
+            <div class="message ai">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="message-text">❌ Error: ${error.message}</div>
+                </div>
+            </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+    }
+}
+
+function handleChatKeyPress(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+
+// Part 3C: JavaScript - Document Management (Final Part)
+
+// ============================================================================
+// DOCUMENT MANAGEMENT
+// ============================================================================
+
+async function loadDocuments() {
+    const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+    });
+
+    const data = await response.json();
+    const container = document.getElementById('document-list');
+
+    if (data.documents.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state" style="padding: 24px;">
+                <div class="empty-icon" style="font-size: 48px;">📁</div>
+                <p style="font-size: 14px;">No documents</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = data.documents.map(doc => {
+        const fileType = (doc.file_type || 'unknown').toUpperCase();
+        const uploadDate = doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'Unknown date';
+        
+        return `
+            <div class="document-item">
+                <div class="doc-header">
+                    <div class="doc-name">${doc.filename || 'Unknown file'}</div>
+                </div>
+                <div class="doc-meta">
+                    ${fileType} • ${uploadDate}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+async function uploadDocument() {
+    const fileInput = document.getElementById('file-input');
+    const file = fileInput.files[0];
+
+    if (!file || !currentSession) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const chatContainer = document.getElementById('chat-messages');
+        
+        // Show processing indicator in chat
+        chatContainer.innerHTML += `
+            <div class="loading">
+                <div class="spinner"></div> 
+                Processing document: ${file.name}...
+            </div>
+        `;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${authToken}` },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.detail || 'Upload failed');
+        }
+
+        const result = await response.json();
+
+        // Remove loading indicator
+        const loadingElements = chatContainer.querySelectorAll('.loading');
+        if (loadingElements.length > 0) {
+            loadingElements[loadingElements.length - 1].remove();
+        }
+
+        // Show success message in chat
+        chatContainer.innerHTML += `
+            <div class="message ai">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="message-text">
+                        ✅ Successfully uploaded and processed: <strong>${result.filename}</strong>
+                        <br><br>
+                        📄 File type: ${result.file_type.toUpperCase()}
+                        <br>
+                        📊 Ready to answer questions about this document!
+                    </div>
+                </div>
+            </div>
+        `;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Reload documents and analytics
+        await loadDocuments();
+        await loadSessions(); // Update document count in sessions
+        await loadSessionAnalytics();
+        
+        fileInput.value = '';
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        
+        const chatContainer = document.getElementById('chat-messages');
+        
+        // Remove loading indicator
+        const loadingElements = chatContainer.querySelectorAll('.loading');
+        if (loadingElements.length > 0) {
+            loadingElements[loadingElements.length - 1].remove();
+        }
+
+        // Show error message in chat
+        chatContainer.innerHTML += `
+            <div class="message ai">
+                <div class="message-avatar">AI</div>
+                <div class="message-content">
+                    <div class="message-text">
+                        ❌ Upload failed: ${error.message}
+                        <br><br>
+                        Please try again or use a different file format.
+                    </div>
+                </div>
+            </div>
+        `;
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        fileInput.value = '';
+    }
+}
+
+// ============================================================================
+// END OF JAVASCRIPT CODE
+// ============================================================================
+
+console.log('🚀 DocBlaze Frontend loaded with Feedback System!');
+console.log('📊 Features: Analytics, Feedback Buttons, Confidence Scores, Regeneration');
+</script>    
+</html>
