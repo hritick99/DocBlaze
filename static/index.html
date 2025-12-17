@@ -175,6 +175,7 @@
             0% {
                 transform: translate(0, 0);
             }
+
             100% {
                 transform: translate(50px, 50px);
             }
@@ -212,9 +213,12 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0px);
             }
+
             50% {
                 transform: translateY(-10px);
             }
@@ -769,6 +773,7 @@
             opacity: 0.3;
         }
 
+
         /* Responsive */
         @media (max-width: 1400px) {
             .main-layout {
@@ -805,462 +810,1064 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--text-secondary);
         }
+
+        /* Session Item with Delete Button */
+        .session-item {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .session-content {
+            flex: 1;
+            min-width: 0;
+            /* Allow text truncation */
+        }
+
+        .session-item:hover {
+            background: var(--background);
+        }
+
+        .session-item.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-color: var(--primary-dark);
+            box-shadow: var(--shadow);
+        }
+
+        .session-actions {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .session-item:hover .session-actions {
+            opacity: 1;
+        }
+
+        .session-item.active .session-actions {
+            opacity: 1;
+        }
+
+        .delete-session-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--error);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .delete-session-btn:hover {
+            background: var(--error);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .session-item.active .delete-session-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+        .session-item.active .delete-session-btn:hover {
+            background: rgba(239, 68, 68, 0.9);
+            border-color: var(--error);
+        }
+
+        /* Payment Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .payment-modal {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: var(--shadow-xl);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .payment-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .payment-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .payment-header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .payment-stats {
+            background: var(--background);
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .payment-stats-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--error);
+            margin-bottom: 4px;
+        }
+
+        .payment-stats-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .payment-options {
+            margin-bottom: 24px;
+        }
+
+        .payment-option {
+            background: var(--background);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .payment-option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .payment-option-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .payment-option-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .payment-option-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .payment-option-features li {
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 4px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .payment-option-features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .payment-code-section {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .payment-code-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .payment-code-input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .payment-code-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            transition: all 0.2s;
+        }
+
+        .payment-code-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .payment-code-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .payment-close-btn {
+            background: var(--background);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            width: 100%;
+            margin-top: 16px;
+            transition: all 0.2s;
+        }
+
+        .payment-close-btn:hover {
+            background: var(--border);
+        }
+
+        /* Query Counter Badge */
+        .query-counter {
+            background: var(--background);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .query-counter.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+        }
+
+        .query-counter.premium {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
     </style>
 </head>
 
 <body>
     <!-- Part 2: HTML Body Structure -->
-<!-- Place this inside the <body> tag after Part 1 -->
+    <!-- Place this inside the <body> tag after Part 1 -->
 
-<!-- Auth Screen -->
-<div id="auth-screen">
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <div class="auth-logo">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
+    <!-- Auth Screen -->
+    <div id="auth-screen">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <div class="auth-logo">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h2>Welcome to DocBlaze</h2>
+                    <p>Professional Document Intelligence Platform</p>
                 </div>
-                <h2>Welcome to DocBlaze</h2>
-                <p>Professional Document Intelligence Platform</p>
+
+                <div class="auth-tabs">
+                    <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
+                </div>
+
+                <div id="auth-message"></div>
+
+                <!-- Login Form -->
+                <form id="login-form">
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="login-email" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="login-password" placeholder="Enter your password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+                </form>
+
+                <!-- Register Form -->
+                <form id="register-form" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="register-username" placeholder="Choose a username"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="register-email" placeholder="your@email.com"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" id="register-password" placeholder="Create a password"
+                            required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+                </form>
             </div>
-
-            <div class="auth-tabs">
-                <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
-                <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
-            </div>
-
-            <div id="auth-message"></div>
-
-            <!-- Login Form -->
-            <form id="login-form">
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="login-email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="login-password" placeholder="Enter your password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
-            </form>
-
-            <!-- Register Form -->
-            <form id="register-form" style="display: none;">
-                <div class="form-group">
-                    <label class="form-label">Username</label>
-                    <input type="text" class="form-input" id="register-username" placeholder="Choose a username" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-input" id="register-email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-input" id="register-password" placeholder="Create a password" required>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
-            </form>
         </div>
     </div>
-</div>
 
-<!-- Main App -->
-<div id="app-screen" style="display: none;">
-    <!-- Header -->
-    <header class="header">
+    <!-- Main App -->
+    <div id="app-screen" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <div class="logo-icon">D</div>
+                        <div class="logo-text">
+                            <h1>DocBlaze</h1>
+                            <p>Document Intelligence</p>
+                        </div>
+                    </div>
+                    <div class="user-menu">
+                        <div id="query-counter" class="query-counter">
+                            <span>⚡</span>
+                            <span id="query-status-text">Loading...</span>
+                        </div>
+                        <div class="user-info">
+                            <div class="name" id="header-username"></div>
+                            <div class="email" id="header-email"></div>
+                        </div>
+                        <div class="user-avatar" id="user-avatar"></div>
+                        <button class="logout-btn" onclick="logout()">
+                            <span style="margin-right: 4px;">🚪</span> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
         <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">D</div>
-                    <div class="logo-text">
-                        <h1>DocBlaze</h1>
-                        <p>Document Intelligence</p>
+            <div class="main-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- 🔥 NEW: Analytics Section -->
+                    <div class="analytics-panel">
+                        <h3 class="section-title" style="font-size: 14px; margin-bottom: 8px;">Session Analytics</h3>
+                        <div class="analytics-grid" id="analytics-grid">
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="total-queries">0</div>
+                                <div class="analytics-label">Total Queries</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="avg-confidence">-</div>
+                                <div class="analytics-label">Avg Confidence</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="positive-feedback">0</div>
+                                <div class="analytics-label">👍 Positive</div>
+                            </div>
+                            <div class="analytics-card">
+                                <div class="analytics-value" id="negative-feedback">0</div>
+                                <div class="analytics-label">👎 Negative</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="user-menu">
-                    <div class="user-info">
-                        <div class="name" id="header-username"></div>
-                        <div class="email" id="header-email"></div>
+
+                    <!-- Sessions List -->
+                    <div class="section-header">
+                        <h2 class="section-title">Sessions</h2>
+                        <button class="btn btn-primary btn-icon" onclick="createNewSession()">+</button>
                     </div>
-                    <div class="user-avatar" id="user-avatar"></div>
-                    <button class="logout-btn" onclick="logout()">
-                        <span style="margin-right: 4px;">🚪</span> Logout
-                    </button>
-                </div>
+                    <div id="session-list" class="session-list">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            Loading sessions...
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Chat Panel -->
+                <main class="chat-panel">
+                    <div class="chat-header">
+                        <h2 class="section-title" id="current-session-name">Select a session</h2>
+                    </div>
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="empty-state">
+                            <div class="empty-icon">💬</div>
+                            <p>Upload documents and start asking questions</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chat-input"
+                            placeholder="Ask anything about your documents..." onkeypress="handleChatKeyPress(event)">
+                        <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </main>
+
+                <!-- Info Panel -->
+                <aside class="info-panel">
+                    <div class="section-header">
+                        <h2 class="section-title">Upload Documents</h2>
+                    </div>
+                    <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                        <div class="upload-icon">📄</div>
+                        <p style="font-weight: 500; margin-bottom: 4px;">Drop files here or click to browse</p>
+                        <p style="font-size: 12px; color: var(--text-secondary);">PDF, DOCX, Excel, CSV, Images</p>
+                        <input type="file" id="file-input" style="display: none;"
+                            accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png" onchange="uploadDocument()">
+                    </div>
+
+                    <div class="section-header" style="margin-top: 24px;">
+                        <h2 class="section-title">Documents</h2>
+                    </div>
+                    <div id="document-list" class="document-list">
+                        <div class="empty-state" style="padding: 24px;">
+                            <div class="empty-icon" style="font-size: 48px;">📁</div>
+                            <p style="font-size: 14px;">No documents uploaded</p>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </div>
-    </header>
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="modal-overlay" style="display: none;">
+            <div class="payment-modal">
+                <div class="payment-header">
+                    <div class="payment-icon">🔒</div>
+                    <h2>Query Limit Reached</h2>
+                    <p>You've used all your free queries</p>
+                </div>
 
-    <!-- Main Layout -->
-    <div class="container">
-        <div class="main-layout">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <!-- 🔥 NEW: Analytics Section -->
-                <div class="analytics-panel">
-                    <h3 class="section-title" style="font-size: 14px; margin-bottom: 8px;">Session Analytics</h3>
-                    <div class="analytics-grid" id="analytics-grid">
-                        <div class="analytics-card">
-                            <div class="analytics-value" id="total-queries">0</div>
-                            <div class="analytics-label">Total Queries</div>
+                <div class="payment-stats">
+                    <div class="payment-stats-value" id="queries-used-modal">5/5</div>
+                    <div class="payment-stats-label">Free Queries Used</div>
+                </div>
+
+                <div class="payment-options">
+                    <div class="payment-option">
+                        <div class="payment-option-header">
+                            <span class="payment-option-title">🌟 Premium Plan</span>
+                            <span class="payment-option-price">$10</span>
                         </div>
-                        <div class="analytics-card">
-                            <div class="analytics-value" id="avg-confidence">-</div>
-                            <div class="analytics-label">Avg Confidence</div>
-                        </div>
-                        <div class="analytics-card">
-                            <div class="analytics-value" id="positive-feedback">0</div>
-                            <div class="analytics-label">👍 Positive</div>
-                        </div>
-                        <div class="analytics-card">
-                            <div class="analytics-value" id="negative-feedback">0</div>
-                            <div class="analytics-label">👎 Negative</div>
-                        </div>
+                        <ul class="payment-option-features">
+                            <li>Unlimited queries</li>
+                            <li>Priority support</li>
+                            <li>Advanced features</li>
+                            <li>No ads</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Sessions List -->
-                <div class="section-header">
-                    <h2 class="section-title">Sessions</h2>
-                    <button class="btn btn-primary btn-icon" onclick="createNewSession()">+</button>
-                </div>
-                <div id="session-list" class="session-list">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        Loading sessions...
+                <div class="payment-code-section">
+                    <div class="payment-code-title">Have a payment code?</div>
+                    <div class="payment-code-input-group">
+                        <input type="text" id="payment-code-input" class="payment-code-input"
+                            placeholder="Enter code here" maxlength="20">
+                        <button class="btn btn-primary" onclick="verifyPaymentCode()">
+                            Verify
+                        </button>
+                    </div>
+                    <div class="payment-code-hint">
+                        💡 Demo code: abcdXXXXXX
                     </div>
                 </div>
-            </aside>
 
-            <!-- Chat Panel -->
-            <main class="chat-panel">
-                <div class="chat-header">
-                    <h2 class="section-title" id="current-session-name">Select a session</h2>
-                </div>
-                <div id="chat-messages" class="chat-messages">
-                    <div class="empty-state">
-                        <div class="empty-icon">💬</div>
-                        <p>Upload documents and start asking questions</p>
-                    </div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" class="chat-input" id="chat-input"
-                        placeholder="Ask anything about your documents..." onkeypress="handleChatKeyPress(event)">
-                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
-                </div>
-            </main>
-
-            <!-- Info Panel -->
-            <aside class="info-panel">
-                <div class="section-header">
-                    <h2 class="section-title">Upload Documents</h2>
-                </div>
-                <div class="upload-area" onclick="document.getElementById('file-input').click()">
-                    <div class="upload-icon">📄</div>
-                    <p style="font-weight: 500; margin-bottom: 4px;">Drop files here or click to browse</p>
-                    <p style="font-size: 12px; color: var(--text-secondary);">PDF, DOCX, Excel, CSV, Images</p>
-                    <input type="file" id="file-input" style="display: none;"
-                        accept=".pdf,.docx,.xlsx,.xls,.csv,.jpg,.jpeg,.png" onchange="uploadDocument()">
-                </div>
-
-                <div class="section-header" style="margin-top: 24px;">
-                    <h2 class="section-title">Documents</h2>
-                </div>
-                <div id="document-list" class="document-list">
-                    <div class="empty-state" style="padding: 24px;">
-                        <div class="empty-icon" style="font-size: 48px;">📁</div>
-                        <p style="font-size: 14px;">No documents uploaded</p>
-                    </div>
-                </div>
-            </aside>
+                <button class="payment-close-btn" onclick="closePaymentModal()">
+                    Close
+                </button>
+            </div>
         </div>
     </div>
-</div>
 
 
-<!-- Part 3 will contain all JavaScript code -->
+    <!-- Part 3 will contain all JavaScript code -->
 </body>
 <script>
     // Part 3A: JavaScript - Configuration, Authentication & Core Functions
-// Place this inside <script> tags at the end of your HTML
+    // Place this inside <script> tags at the end of your HTML
 
-const API_BASE = '/api';
-let authToken = localStorage.getItem('docblaze_token');
-let currentUser = null;
-let currentSession = null;
-let sessions = [];
+    const API_BASE = '/api';
+    let authToken = localStorage.getItem('docblaze_token');
+    let currentUser = null;
+    let currentSession = null;
+    let sessions = [];
 
-// ============================================================================
-// INITIALIZATION
-// ============================================================================
+    // ============================================================================
+    // INITIALIZATION
+    // ============================================================================
 
-window.addEventListener('DOMContentLoaded', async () => {
-    if (authToken) {
-        try {
-            await loadUser();
-            await loadSessions();
-            showApp();
-        } catch (error) {
-            localStorage.removeItem('docblaze_token');
+    window.addEventListener('DOMContentLoaded', async () => {
+        if (authToken) {
+            try {
+                await loadUser();
+                await loadQueryStatus(); // 🔥 Make sure this is here
+                await loadSessions();
+                showApp();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                localStorage.removeItem('docblaze_token');
+                showAuth();
+            }
+        } else {
             showAuth();
         }
-    } else {
-        showAuth();
+    });
+    // ============================================================================
+    // SCREEN MANAGEMENT
+    // ============================================================================
+
+    function showAuth() {
+        document.getElementById('auth-screen').style.display = 'block';
+        document.getElementById('app-screen').style.display = 'none';
     }
-});
 
-// ============================================================================
-// SCREEN MANAGEMENT
-// ============================================================================
-
-function showAuth() {
-    document.getElementById('auth-screen').style.display = 'block';
-    document.getElementById('app-screen').style.display = 'none';
-}
-
-function showApp() {
-    document.getElementById('auth-screen').style.display = 'none';
-    document.getElementById('app-screen').style.display = 'block';
-}
-
-function switchAuthTab(tab) {
-    const tabs = document.querySelectorAll('.auth-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
-
-    if (tab === 'login') {
-        document.getElementById('login-form').style.display = 'block';
-        document.getElementById('register-form').style.display = 'none';
-    } else {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('register-form').style.display = 'block';
+    function showApp() {
+        document.getElementById('auth-screen').style.display = 'none';
+        document.getElementById('app-screen').style.display = 'block';
     }
-}
 
-// ============================================================================
-// AUTHENTICATION
-// ============================================================================
+    function switchAuthTab(tab) {
+        const tabs = document.querySelectorAll('.auth-tab');
+        tabs.forEach(t => t.classList.remove('active'));
 
-document.getElementById('login-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
+        // Find and activate the correct tab based on the 'tab' parameter
+        if (tab === 'login') {
+            tabs[0].classList.add('active');
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('register-form').style.display = 'none';
+        } else {
+            tabs[1].classList.add('active');
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('register-form').style.display = 'block';
+        }
+    }
 
-    try {
-        const response = await fetch(`${API_BASE}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+    // ============================================================================
+    // AUTHENTICATION
+    // ============================================================================
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        try {
+            const response = await fetch(`${API_BASE}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) throw new Error('Invalid credentials');
+
+            const data = await response.json();
+            authToken = data.token;
+            localStorage.setItem('docblaze_token', authToken);
+            currentUser = data.user;
+
+            updateUserDisplay();
+
+            // 🔥 CRITICAL: Load query status FIRST
+            await loadQueryStatus();
+            console.log('✅ Query status loaded:', queryStatus);
+
+            await loadSessions();
+            showApp();
+
+        } catch (error) {
+            showMessage('error', error.message);
+        }
+    });
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('register-username').value;
+        const email = document.getElementById('register-email').value;
+        const password = document.getElementById('register-password').value;
+
+        try {
+            const response = await fetch(`${API_BASE}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail);
+            }
+
+            showMessage('success', 'Account created! Please login.');
+            switchAuthTab('login');
+            document.getElementById('login-email').value = email;
+        } catch (error) {
+            showMessage('error', error.message);
+        }
+    });
+
+    function showMessage(type, message) {
+        const div = document.getElementById('auth-message');
+        div.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+        setTimeout(() => div.innerHTML = '', 5000);
+    }
+
+    async function loadUser() {
+        const response = await fetch(`${API_BASE}/users/me`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
 
-        if (!response.ok) throw new Error('Invalid credentials');
+        if (!response.ok) throw new Error('Failed to load user');
 
-        const data = await response.json();
-        authToken = data.token;
-        localStorage.setItem('docblaze_token', authToken);
-        currentUser = data.user;
-
-        await loadSessions();
-        showApp();
+        currentUser = await response.json();
         updateUserDisplay();
-    } catch (error) {
-        showMessage('error', error.message);
     }
-});
 
-document.getElementById('register-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('register-username').value;
-    const email = document.getElementById('register-email').value;
-    const password = document.getElementById('register-password').value;
+    function updateUserDisplay() {
+        const username = currentUser.username;
+        document.getElementById('header-username').textContent = username;
+        document.getElementById('header-email').textContent = currentUser.email;
 
-    try {
-        const response = await fetch(`${API_BASE}/auth/register`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, password })
+        const avatar = document.getElementById('user-avatar');
+        avatar.textContent = username.charAt(0).toUpperCase();
+    }
+
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('docblaze_token');
+            authToken = null;
+            currentUser = null;
+            currentSession = null;
+            sessions = [];
+
+            // 🔥 ADD THIS: Reset query status to defaults
+            queryStatus = {
+                is_premium: false,
+                queries_used: 0,
+                queries_remaining: 5,
+                limit_reached: false
+            };
+
+            document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('register-password').value = '';
+
+            showAuth();
+        }
+    }
+
+    // ============================================================================
+    // SESSION MANAGEMENT
+    // ============================================================================
+
+    async function loadSessions() {
+        const response = await fetch(`${API_BASE}/sessions`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
 
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.detail);
+        sessions = await response.json();
+        renderSessions();
+
+        if (sessions.length > 0 && !currentSession) {
+            await selectSession(sessions[0].session_id);
+        }
+    }
+
+    function renderSessions() {
+        const container = document.getElementById('session-list');
+
+        if (sessions.length === 0) {
+            container.innerHTML = '<div class="empty-state" style="padding: 24px;"><p style="font-size: 14px;">No sessions yet</p></div>';
+            return;
         }
 
-        showMessage('success', 'Account created! Please login.');
-        switchAuthTab('login');
-        document.getElementById('login-email').value = email;
-    } catch (error) {
-        showMessage('error', error.message);
-    }
-});
-
-function showMessage(type, message) {
-    const div = document.getElementById('auth-message');
-    div.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-    setTimeout(() => div.innerHTML = '', 5000);
-}
-
-async function loadUser() {
-    const response = await fetch(`${API_BASE}/users/me`, {
-        headers: { 'Authorization': `Bearer ${authToken}` }
-    });
-
-    if (!response.ok) throw new Error('Failed to load user');
-
-    currentUser = await response.json();
-    updateUserDisplay();
-}
-
-function updateUserDisplay() {
-    const username = currentUser.username;
-    document.getElementById('header-username').textContent = username;
-    document.getElementById('header-email').textContent = currentUser.email;
-    
-    const avatar = document.getElementById('user-avatar');
-    avatar.textContent = username.charAt(0).toUpperCase();
-}
-
-function logout() {
-    if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('docblaze_token');
-        authToken = null;
-        currentUser = null;
-        currentSession = null;
-        sessions = [];
-        
-        document.getElementById('login-email').value = '';
-        document.getElementById('login-password').value = '';
-        document.getElementById('register-username').value = '';
-        document.getElementById('register-email').value = '';
-        document.getElementById('register-password').value = '';
-        
-        showAuth();
-    }
-}
-
-// ============================================================================
-// SESSION MANAGEMENT
-// ============================================================================
-
-async function loadSessions() {
-    const response = await fetch(`${API_BASE}/sessions`, {
-        headers: { 'Authorization': `Bearer ${authToken}` }
-    });
-
-    sessions = await response.json();
-    renderSessions();
-
-    if (sessions.length > 0 && !currentSession) {
-        await selectSession(sessions[0].session_id);
-    }
-}
-
-function renderSessions() {
-    const container = document.getElementById('session-list');
-
-    if (sessions.length === 0) {
-        container.innerHTML = '<div class="empty-state" style="padding: 24px;"><p style="font-size: 14px;">No sessions yet</p></div>';
-        return;
-    }
-
-    container.innerHTML = sessions.map(session => `
-        <div class="session-item ${session.session_id === currentSession ? 'active' : ''}" 
-             onclick="selectSession('${session.session_id}')">
-            <div class="session-name">${session.session_name}</div>
-            <div class="session-meta">
-                ${session.document_count} docs • ${new Date(session.last_active).toLocaleDateString()}
+        container.innerHTML = sessions.map(session => `
+        <div class="session-item ${session.session_id === currentSession ? 'active' : ''}">
+            <div class="session-content" onclick="selectSession('${session.session_id}')">
+                <div class="session-name">${session.session_name}</div>
+                <div class="session-meta">
+                    ${session.document_count} docs • ${new Date(session.last_active).toLocaleDateString()}
+                </div>
+            </div>
+            <div class="session-actions">
+                <button class="delete-session-btn" 
+                        onclick="deleteSession('${session.session_id}', event)"
+                        title="Delete session">
+                    🗑️
+                </button>
             </div>
         </div>
     `).join('');
-}
+    }
+    async function deleteSession(sessionId, event) {
+        // Prevent triggering session selection
+        event.stopPropagation();
 
-async function createNewSession() {
-    const response = await fetch(`${API_BASE}/sessions`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${authToken}` }
-    });
+        const session = sessions.find(s => s.session_id === sessionId);
+        const sessionName = session ? session.session_name : 'this session';
 
-    const session = await response.json();
-    await loadSessions();
-    await selectSession(session.session_id);
-}
+        if (!confirm(`Are you sure you want to delete "${sessionName}"?\n\nThis will permanently delete:\n• All documents in this session\n• All chat history\n• All associated data\n\nThis action cannot be undone.`)) {
+            return;
+        }
 
-async function selectSession(sessionId) {
-    currentSession = sessionId;
-    const session = sessions.find(s => s.session_id === sessionId);
+        try {
+            const response = await fetch(`${API_BASE}/sessions/${sessionId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
 
-    document.getElementById('current-session-name').textContent = session.session_name;
-    renderSessions();
+            if (!response.ok) {
+                throw new Error('Failed to delete session');
+            }
 
-    await loadChatHistory();
-    await loadDocuments();
-    await loadSessionAnalytics(); // 🔥 NEW: Load analytics
-}
+            // If we deleted the current session, clear the UI
+            if (sessionId === currentSession) {
+                currentSession = null;
+                document.getElementById('current-session-name').textContent = 'Select a session';
+                document.getElementById('chat-messages').innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">💬</div>
+                    <p>Select a session or create a new one</p>
+                </div>
+            `;
+                document.getElementById('document-list').innerHTML = `
+                <div class="empty-state" style="padding: 24px;">
+                    <div class="empty-icon" style="font-size: 48px;">📁</div>
+                    <p style="font-size: 14px;">No documents uploaded</p>
+                </div>
+            `;
 
-// This is Part 3A - Continue to Part 3B for Chat & Document functions
-// ============================================================================
-// PART 3B: CHAT HISTORY WITH FEEDBACK UI
-// ============================================================================
+                // Clear analytics
+                document.getElementById('total-queries').textContent = '0';
+                document.getElementById('avg-confidence').textContent = '-';
+                document.getElementById('positive-feedback').textContent = '0';
+                document.getElementById('negative-feedback').textContent = '0';
+            }
 
-async function loadChatHistory() {
-    const response = await fetch(`${API_BASE}/sessions/${currentSession}/history`, {
-        headers: { 'Authorization': `Bearer ${authToken}` }
-    });
+            // Reload sessions
+            await loadSessions();
 
-    const data = await response.json();
-    const container = document.getElementById('chat-messages');
+            // If we deleted current session and there are other sessions, select the first one
+            if (sessionId === currentSession && sessions.length > 0) {
+                await selectSession(sessions[0].session_id);
+            }
 
-    if (data.history.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No messages yet</p></div>';
-        return;
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('Failed to delete session: ' + error.message);
+        }
+    }
+    async function createNewSession() {
+        const response = await fetch(`${API_BASE}/sessions`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        const session = await response.json();
+        await loadSessions();
+        await selectSession(session.session_id);
     }
 
-    container.innerHTML = data.history.map(chat => {
-        // Build sources HTML
-        let sourcesHtml = '';
-        if (chat.sources && Array.isArray(chat.sources) && chat.sources.length > 0) {
-            const sourceNames = chat.sources
-                .filter(s => s && s.filename)
-                .map(s => s.filename)
-                .join(', ');
-            
-            if (sourceNames) {
-                sourcesHtml = `
+    async function selectSession(sessionId) {
+        currentSession = sessionId;
+        const session = sessions.find(s => s.session_id === sessionId);
+
+        document.getElementById('current-session-name').textContent = session.session_name;
+        renderSessions();
+
+        await loadChatHistory();
+        await loadDocuments();
+        await loadSessionAnalytics(); // 🔥 NEW: Load analytics
+    }
+
+    // ============================================================================
+    // PAYMENT & QUERY LIMIT SYSTEM
+    // ============================================================================
+
+    let queryStatus = {
+        is_premium: false,
+        queries_used: 0,
+        queries_remaining: 5,
+        limit_reached: false
+    };
+
+    async function loadQueryStatus() {
+        if (!authToken) {
+            console.warn('⚠️ No auth token, skipping query status load');
+            return;
+        }
+
+        try {
+            console.log('🔄 Loading query status...');
+            const response = await fetch(`${API_BASE}/users/query-status`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) {
+                console.error('❌ Query status failed:', response.status);
+                throw new Error('Failed to load query status');
+            }
+
+            queryStatus = await response.json();
+            console.log('✅ Query status loaded:', queryStatus);
+            updateQueryCounter();
+        } catch (error) {
+            console.error('❌ Query status error:', error);
+            // Set defaults on error
+            queryStatus = {
+                is_premium: false,
+                queries_used: 0,
+                queries_remaining: 5,
+                limit_reached: false
+            };
+            updateQueryCounter();
+        }
+    }
+
+    function updateQueryCounter() {
+        const counter = document.getElementById('query-counter');
+        const statusText = document.getElementById('query-status-text');
+
+        if (!counter || !statusText) {
+            console.error('❌ Query counter elements not found!');
+            return;
+        }
+
+        console.log('🔄 Updating query counter with:', queryStatus);
+
+        if (queryStatus.is_premium) {
+            counter.className = 'query-counter premium';
+            statusText.textContent = '∞ Premium';
+            console.log('✅ Showing premium status');
+        } else {
+            const remaining = queryStatus.queries_remaining || 0;
+
+            if (remaining <= 1) {
+                counter.className = 'query-counter warning';
+            } else {
+                counter.className = 'query-counter';
+            }
+
+            statusText.textContent = `${remaining} queries left`;
+            console.log(`✅ Showing ${remaining} queries left`);
+        }
+    }
+
+    function showPaymentModal() {
+        const modal = document.getElementById('payment-modal');
+        const usedText = document.getElementById('queries-used-modal');
+
+        usedText.textContent = `${queryStatus.queries_used}/${queryStatus.queries_used}`;
+        modal.style.display = 'flex';
+
+        // Clear previous input
+        document.getElementById('payment-code-input').value = '';
+    }
+
+    function closePaymentModal() {
+        document.getElementById('payment-modal').style.display = 'none';
+    }
+
+    async function verifyPaymentCode() {
+        const input = document.getElementById('payment-code-input');
+        const code = input.value.trim();
+
+        if (!code) {
+            alert('Please enter a payment code');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/users/verify-payment`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Success!
+                alert('🎉 ' + data.message);
+                closePaymentModal();
+                await loadQueryStatus();
+
+                // Show success message in chat
+                const container = document.getElementById('chat-messages');
+                container.innerHTML += `
+                <div class="message ai">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            🎉 <strong>Premium Activated!</strong>
+                            <br><br>
+                            You now have unlimited queries. Thank you for upgrading!
+                        </div>
+                    </div>
+                </div>
+            `;
+                container.scrollTop = container.scrollHeight;
+            } else {
+                alert('❌ ' + data.message);
+            }
+        } catch (error) {
+            console.error('Payment verification error:', error);
+            alert('Failed to verify payment code. Please try again.');
+        }
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+        const modal = document.getElementById('payment-modal');
+        if (e.target === modal) {
+            closePaymentModal();
+        }
+    });
+    window.addEventListener('focus', async () => {
+        if (authToken && currentUser) {
+            console.log('👁️ Window focused, refreshing query status...');
+            await loadQueryStatus();
+        }
+    });
+    // This is Part 3A - Continue to Part 3B for Chat & Document functions
+    // ============================================================================
+    // PART 3B: CHAT HISTORY WITH FEEDBACK UI
+    // ============================================================================
+
+    async function loadChatHistory() {
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/history`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        const data = await response.json();
+        const container = document.getElementById('chat-messages');
+
+        if (data.history.length === 0) {
+            container.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No messages yet</p></div>';
+            return;
+        }
+
+        container.innerHTML = data.history.map(chat => {
+            // Build sources HTML
+            let sourcesHtml = '';
+            if (chat.sources && Array.isArray(chat.sources) && chat.sources.length > 0) {
+                const sourceNames = chat.sources
+                    .filter(s => s && s.filename)
+                    .map(s => s.filename)
+                    .join(', ');
+
+                if (sourceNames) {
+                    sourcesHtml = `
                     <div class="message-sources">
                         📚 Sources: ${sourceNames}
                     </div>
                 `;
+                }
             }
-        }
 
-        // 🔥 NEW: Build confidence badge
-        let confidenceBadge = '';
-        if (chat.confidence_score !== undefined && chat.confidence_score !== null) {
-            const score = chat.confidence_score;
-            let level = 'low';
-            let label = 'Low';
-            
-            if (score >= 0.7) {
-                level = 'high';
-                label = 'High';
-            } else if (score >= 0.4) {
-                level = 'medium';
-                label = 'Medium';
-            }
-            
-            confidenceBadge = `
+            // 🔥 NEW: Build confidence badge
+            let confidenceBadge = '';
+            if (chat.confidence_score !== undefined && chat.confidence_score !== null) {
+                const score = chat.confidence_score;
+                let level = 'low';
+                let label = 'Low';
+
+                if (score >= 0.7) {
+                    level = 'high';
+                    label = 'High';
+                } else if (score >= 0.4) {
+                    level = 'medium';
+                    label = 'Medium';
+                }
+
+                confidenceBadge = `
                 <span class="confidence-badge confidence-${level}">
                     <span class="quality-dot ${level}"></span>
                     ${label} Confidence
                 </span>
             `;
-        }
+            }
 
-        // 🔥 NEW: Build feedback buttons
-        const feedback = chat.feedback || {};
-        const feedbackHtml = `
+            // 🔥 NEW: Build feedback buttons
+            const feedback = chat.feedback || {};
+            const feedbackHtml = `
             <div class="message-footer">
                 <div class="feedback-buttons">
                     <button class="feedback-btn positive ${feedback.rating === 'positive' ? 'active' : ''}" 
@@ -1285,7 +1892,7 @@ async function loadChatHistory() {
             </div>
         `;
 
-        return `
+            return `
             <div class="message user">
                 <div class="message-avatar">U</div>
                 <div class="message-content">
@@ -1301,121 +1908,127 @@ async function loadChatHistory() {
                 </div>
             </div>
         `;
-    }).join('');
+        }).join('');
 
-    container.scrollTop = container.scrollHeight;
-}
-
-// ============================================================================
-// 🔥 NEW: FEEDBACK SYSTEM
-// ============================================================================
-
-async function submitFeedback(chatId, rating) {
-    try {
-        const response = await fetch(`${API_BASE}/chats/${chatId}/feedback`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ rating })
-        });
-
-        if (!response.ok) throw new Error('Failed to submit feedback');
-
-        // Reload UI to show updated feedback
-        await loadChatHistory();
-        await loadSessionAnalytics();
-    } catch (error) {
-        console.error('Feedback error:', error);
+        container.scrollTop = container.scrollHeight;
     }
-}
 
-async function regenerateResponse(chatId, originalQuery) {
-    const container = document.getElementById('chat-messages');
+    // ============================================================================
+    // 🔥 NEW: FEEDBACK SYSTEM
+    // ============================================================================
 
-    // Show loading indicator
-    container.innerHTML += '<div class="loading"><div class="spinner"></div> Regenerating with improved retrieval...</div>';
-    container.scrollTop = container.scrollHeight;
+    async function submitFeedback(chatId, rating) {
+        try {
+            const response = await fetch(`${API_BASE}/chats/${chatId}/feedback`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rating })
+            });
 
-    try {
-        const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 
-                query: originalQuery,
-                regenerate: true,
-                previous_chat_id: chatId
-            })
-        });
+            if (!response.ok) throw new Error('Failed to submit feedback');
 
-        if (!response.ok) throw new Error('Regeneration failed');
-
-        // Reload chat history to show new response
-        await loadChatHistory();
-        await loadSessionAnalytics();
-    } catch (error) {
-        console.error('Regeneration error:', error);
-        alert('Failed to regenerate response: ' + error.message);
-        
-        // Remove loading indicator
-        const loadingElements = container.querySelectorAll('.loading');
-        if (loadingElements.length > 0) {
-            loadingElements[loadingElements.length - 1].remove();
+            // Reload UI to show updated feedback
+            await loadChatHistory();
+            await loadSessionAnalytics();
+        } catch (error) {
+            console.error('Feedback error:', error);
         }
     }
-}
 
-// ============================================================================
-// 🔥 NEW: ANALYTICS
-// ============================================================================
+    async function regenerateResponse(chatId, originalQuery) {
+        const container = document.getElementById('chat-messages');
 
-async function loadSessionAnalytics() {
-    if (!currentSession) return;
+        // Show loading indicator
+        container.innerHTML += '<div class="loading"><div class="spinner"></div> Regenerating with improved retrieval...</div>';
+        container.scrollTop = container.scrollHeight;
 
-    try {
-        const response = await fetch(`${API_BASE}/sessions/${currentSession}/analytics`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
+        try {
+            const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    query: originalQuery,
+                    regenerate: true,
+                    previous_chat_id: chatId
+                })
+            });
 
-        if (!response.ok) return;
+            if (!response.ok) throw new Error('Regeneration failed');
 
-        const data = await response.json();
+            // Reload chat history to show new response
+            await loadChatHistory();
+            await loadSessionAnalytics();
+        } catch (error) {
+            console.error('Regeneration error:', error);
+            alert('Failed to regenerate response: ' + error.message);
 
-        // Update analytics display
-        document.getElementById('total-queries').textContent = data.total_queries || 0;
-        document.getElementById('positive-feedback').textContent = data.positive_feedback || 0;
-        document.getElementById('negative-feedback').textContent = data.negative_feedback || 0;
-
-        // Format average confidence as percentage
-        const avgConf = data.avg_confidence;
-        if (avgConf !== null && avgConf !== undefined) {
-            document.getElementById('avg-confidence').textContent = `${Math.round(avgConf * 100)}%`;
-        } else {
-            document.getElementById('avg-confidence').textContent = '-';
+            // Remove loading indicator
+            const loadingElements = container.querySelectorAll('.loading');
+            if (loadingElements.length > 0) {
+                loadingElements[loadingElements.length - 1].remove();
+            }
         }
-    } catch (error) {
-        console.error('Failed to load analytics:', error);
     }
-}
 
-// ============================================================================
-// SEND MESSAGE WITH FEEDBACK UI
-// ============================================================================
+    // ============================================================================
+    // 🔥 NEW: ANALYTICS
+    // ============================================================================
 
-async function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const query = input.value.trim();
+    async function loadSessionAnalytics() {
+        if (!currentSession) return;
 
-    if (!query || !currentSession) return;
+        try {
+            const response = await fetch(`${API_BASE}/sessions/${currentSession}/analytics`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
 
-    const container = document.getElementById('chat-messages');
+            if (!response.ok) return;
 
-    // Display user message
-    container.innerHTML += `
+            const data = await response.json();
+
+            // Update analytics display
+            document.getElementById('total-queries').textContent = data.total_queries || 0;
+            document.getElementById('positive-feedback').textContent = data.positive_feedback || 0;
+            document.getElementById('negative-feedback').textContent = data.negative_feedback || 0;
+
+            // Format average confidence as percentage
+            const avgConf = data.avg_confidence;
+            if (avgConf !== null && avgConf !== undefined) {
+                document.getElementById('avg-confidence').textContent = `${Math.round(avgConf * 100)}%`;
+            } else {
+                document.getElementById('avg-confidence').textContent = '-';
+            }
+        } catch (error) {
+            console.error('Failed to load analytics:', error);
+        }
+    }
+
+    // ============================================================================
+    // SEND MESSAGE WITH FEEDBACK UI
+    // ============================================================================
+
+    async function sendMessage() {
+        const input = document.getElementById('chat-input');
+        const query = input.value.trim();
+
+        if (!query || !currentSession) return;
+
+        // 🔥 NEW: Check query limit before sending
+        if (queryStatus.limit_reached && !queryStatus.is_premium) {
+            showPaymentModal();
+            return;
+        }
+
+        const container = document.getElementById('chat-messages');
+
+        // Display user message
+        container.innerHTML += `
         <div class="message user">
             <div class="message-avatar">U</div>
             <div class="message-content">
@@ -1424,75 +2037,102 @@ async function sendMessage() {
         </div>
     `;
 
-    input.value = '';
-    container.scrollTop = container.scrollHeight;
+        input.value = '';
+        container.scrollTop = container.scrollHeight;
 
-    // Show loading indicator
-    container.innerHTML += '<div class="loading"><div class="spinner"></div> Thinking...</div>';
-    container.scrollTop = container.scrollHeight;
+        // Show loading indicator
+        container.innerHTML += '<div class="loading"><div class="spinner"></div> Thinking...</div>';
+        container.scrollTop = container.scrollHeight;
 
-    try {
-        const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${authToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ query })
-        });
+        try {
+            const response = await fetch(`${API_BASE}/sessions/${currentSession}/query`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query })
+            });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+            // 🔥 NEW: Handle 403 (query limit reached) - ADD THIS SECTION
+            if (response.status === 403) {
+                const error = await response.json();
 
-        const data = await response.json();
+                // Remove loading indicator
+                const loadingElements = container.querySelectorAll('.loading');
+                loadingElements[loadingElements.length - 1]?.remove();
 
-        // Remove loading indicator
-        const loadingElements = container.querySelectorAll('.loading');
-        loadingElements[loadingElements.length - 1]?.remove();
+                // Show error in chat
+                container.innerHTML += `
+                <div class="message ai">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            🔒 ${error.detail}
+                        </div>
+                    </div>
+                </div>
+            `;
+                container.scrollTop = container.scrollHeight;
 
-        // Build sources HTML
-        let sourcesHtml = '';
-        if (data.sources && Array.isArray(data.sources) && data.sources.length > 0) {
-            const sourceNames = data.sources
-                .filter(s => s && s.filename)
-                .map(s => s.filename)
-                .join(', ');
-            
-            if (sourceNames) {
-                sourcesHtml = `
+                // Reload status and show modal
+                await loadQueryStatus();
+                showPaymentModal();
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Remove loading indicator
+            const loadingElements = container.querySelectorAll('.loading');
+            loadingElements[loadingElements.length - 1]?.remove();
+
+            // Build sources HTML
+            let sourcesHtml = '';
+            if (data.sources && Array.isArray(data.sources) && data.sources.length > 0) {
+                const sourceNames = data.sources
+                    .filter(s => s && s.filename)
+                    .map(s => s.filename)
+                    .join(', ');
+
+                if (sourceNames) {
+                    sourcesHtml = `
                     <div class="message-sources">
                         📚 Sources: ${sourceNames}
                     </div>
                 `;
+                }
             }
-        }
 
-        // 🔥 NEW: Build confidence badge
-        let confidenceBadge = '';
-        if (data.confidence_score !== undefined && data.confidence_score !== null) {
-            const score = data.confidence_score;
-            let level = 'low';
-            let label = 'Low';
-            
-            if (score >= 0.7) {
-                level = 'high';
-                label = 'High';
-            } else if (score >= 0.4) {
-                level = 'medium';
-                label = 'Medium';
-            }
-            
-            confidenceBadge = `
+            // 🔥 NEW: Build confidence badge
+            let confidenceBadge = '';
+            if (data.confidence_score !== undefined && data.confidence_score !== null) {
+                const score = data.confidence_score;
+                let level = 'low';
+                let label = 'Low';
+
+                if (score >= 0.7) {
+                    level = 'high';
+                    label = 'High';
+                } else if (score >= 0.4) {
+                    level = 'medium';
+                    label = 'Medium';
+                }
+
+                confidenceBadge = `
                 <span class="confidence-badge confidence-${level}">
                     <span class="quality-dot ${level}"></span>
                     ${label} Confidence
                 </span>
             `;
-        }
+            }
 
-        // 🔥 NEW: Build feedback buttons for new message
-        const feedbackHtml = `
+            // 🔥 NEW: Build feedback buttons for new message
+            const feedbackHtml = `
             <div class="message-footer">
                 <div class="feedback-buttons">
                     <button class="feedback-btn positive" 
@@ -1512,8 +2152,8 @@ async function sendMessage() {
             </div>
         `;
 
-        // Display AI response with feedback UI
-        container.innerHTML += `
+            // Display AI response with feedback UI
+            container.innerHTML += `
             <div class="message ai">
                 <div class="message-avatar">AI</div>
                 <div class="message-content">
@@ -1524,21 +2164,24 @@ async function sendMessage() {
             </div>
         `;
 
-        container.scrollTop = container.scrollHeight;
-        
-        // Reload sessions and analytics
-        await loadSessions();
-        await loadSessionAnalytics();
-        
-    } catch (error) {
-        console.error('Error:', error);
-        
-        // Remove loading indicator
-        const loadingElements = container.querySelectorAll('.loading');
-        loadingElements[loadingElements.length - 1]?.remove();
+            container.scrollTop = container.scrollHeight;
 
-        // Display error message
-        container.innerHTML += `
+            // Reload sessions and analytics
+            await loadSessions();
+            await loadSessionAnalytics();
+
+            // 🔥 NEW: Update query status after successful query - ADD THIS LINE
+            await loadQueryStatus();
+
+        } catch (error) {
+            console.error('Error:', error);
+
+            // Remove loading indicator
+            const loadingElements = container.querySelectorAll('.loading');
+            loadingElements[loadingElements.length - 1]?.remove();
+
+            // Display error message
+            container.innerHTML += `
             <div class="message ai">
                 <div class="message-avatar">AI</div>
                 <div class="message-content">
@@ -1546,46 +2189,46 @@ async function sendMessage() {
                 </div>
             </div>
         `;
-        container.scrollTop = container.scrollHeight;
+            container.scrollTop = container.scrollHeight;
+        }
     }
-}
 
-function handleChatKeyPress(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
+    function handleChatKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            sendMessage();
+        }
     }
-}
 
-// Part 3C: JavaScript - Document Management (Final Part)
+    // Part 3C: JavaScript - Document Management (Final Part)
 
-// ============================================================================
-// DOCUMENT MANAGEMENT
-// ============================================================================
+    // ============================================================================
+    // DOCUMENT MANAGEMENT
+    // ============================================================================
 
-async function loadDocuments() {
-    const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
-        headers: { 'Authorization': `Bearer ${authToken}` }
-    });
+    async function loadDocuments() {
+        const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
 
-    const data = await response.json();
-    const container = document.getElementById('document-list');
+        const data = await response.json();
+        const container = document.getElementById('document-list');
 
-    if (data.documents.length === 0) {
-        container.innerHTML = `
+        if (data.documents.length === 0) {
+            container.innerHTML = `
             <div class="empty-state" style="padding: 24px;">
                 <div class="empty-icon" style="font-size: 48px;">📁</div>
                 <p style="font-size: 14px;">No documents</p>
             </div>
         `;
-        return;
-    }
+            return;
+        }
 
-    container.innerHTML = data.documents.map(doc => {
-        const fileType = (doc.file_type || 'unknown').toUpperCase();
-        const uploadDate = doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'Unknown date';
-        
-        return `
+        container.innerHTML = data.documents.map(doc => {
+            const fileType = (doc.file_type || 'unknown').toUpperCase();
+            const uploadDate = doc.uploaded_at ? new Date(doc.uploaded_at).toLocaleDateString() : 'Unknown date';
+
+            return `
             <div class="document-item">
                 <div class="doc-header">
                     <div class="doc-name">${doc.filename || 'Unknown file'}</div>
@@ -1595,51 +2238,51 @@ async function loadDocuments() {
                 </div>
             </div>
         `;
-    }).join('');
-}
+        }).join('');
+    }
 
-async function uploadDocument() {
-    const fileInput = document.getElementById('file-input');
-    const file = fileInput.files[0];
+    async function uploadDocument() {
+        const fileInput = document.getElementById('file-input');
+        const file = fileInput.files[0];
 
-    if (!file || !currentSession) return;
+        if (!file || !currentSession) return;
 
-    const formData = new FormData();
-    formData.append('file', file);
+        const formData = new FormData();
+        formData.append('file', file);
 
-    try {
-        const chatContainer = document.getElementById('chat-messages');
-        
-        // Show processing indicator in chat
-        chatContainer.innerHTML += `
+        try {
+            const chatContainer = document.getElementById('chat-messages');
+
+            // Show processing indicator in chat
+            chatContainer.innerHTML += `
             <div class="loading">
                 <div class="spinner"></div> 
                 Processing document: ${file.name}...
             </div>
         `;
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
 
-        const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
-            method: 'POST',
-            headers: { 'Authorization': `Bearer ${authToken}` },
-            body: formData
-        });
+            const response = await fetch(`${API_BASE}/sessions/${currentSession}/documents`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${authToken}` },
+                body: formData
+            });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.detail || 'Upload failed');
-        }
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Upload failed');
+            }
 
-        const result = await response.json();
+            const result = await response.json();
 
-        // Remove loading indicator
-        const loadingElements = chatContainer.querySelectorAll('.loading');
-        if (loadingElements.length > 0) {
-            loadingElements[loadingElements.length - 1].remove();
-        }
+            // Remove loading indicator
+            const loadingElements = chatContainer.querySelectorAll('.loading');
+            if (loadingElements.length > 0) {
+                loadingElements[loadingElements.length - 1].remove();
+            }
 
-        // Show success message in chat
-        chatContainer.innerHTML += `
+            // Show success message in chat
+            chatContainer.innerHTML += `
             <div class="message ai">
                 <div class="message-avatar">AI</div>
                 <div class="message-content">
@@ -1653,28 +2296,28 @@ async function uploadDocument() {
                 </div>
             </div>
         `;
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+            chatContainer.scrollTop = chatContainer.scrollHeight;
 
-        // Reload documents and analytics
-        await loadDocuments();
-        await loadSessions(); // Update document count in sessions
-        await loadSessionAnalytics();
-        
-        fileInput.value = '';
-        
-    } catch (error) {
-        console.error('Upload error:', error);
-        
-        const chatContainer = document.getElementById('chat-messages');
-        
-        // Remove loading indicator
-        const loadingElements = chatContainer.querySelectorAll('.loading');
-        if (loadingElements.length > 0) {
-            loadingElements[loadingElements.length - 1].remove();
-        }
+            // Reload documents and analytics
+            await loadDocuments();
+            await loadSessions(); // Update document count in sessions
+            await loadSessionAnalytics();
 
-        // Show error message in chat
-        chatContainer.innerHTML += `
+            fileInput.value = '';
+
+        } catch (error) {
+            console.error('Upload error:', error);
+
+            const chatContainer = document.getElementById('chat-messages');
+
+            // Remove loading indicator
+            const loadingElements = chatContainer.querySelectorAll('.loading');
+            if (loadingElements.length > 0) {
+                loadingElements[loadingElements.length - 1].remove();
+            }
+
+            // Show error message in chat
+            chatContainer.innerHTML += `
             <div class="message ai">
                 <div class="message-avatar">AI</div>
                 <div class="message-content">
@@ -1686,17 +2329,18 @@ async function uploadDocument() {
                 </div>
             </div>
         `;
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        fileInput.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            fileInput.value = '';
+        }
     }
-}
 
-// ============================================================================
-// END OF JAVASCRIPT CODE
-// ============================================================================
+    // ============================================================================
+    // END OF JAVASCRIPT CODE
+    // ============================================================================
 
-console.log('🚀 DocBlaze Frontend loaded with Feedback System!');
-console.log('📊 Features: Analytics, Feedback Buttons, Confidence Scores, Regeneration');
-</script>    
+    console.log('🚀 DocBlaze Frontend loaded with Feedback System!');
+    console.log('📊 Features: Analytics, Feedback Buttons, Confidence Scores, Regeneration');
+</script>
+
 </html>

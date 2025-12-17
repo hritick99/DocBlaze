@@ -2,7 +2,8 @@
 DocBlaze Backend - OpenAI Version with Feedback System (Phase 1 & 2)
 Production-Grade RAG with Intelligent Feedback Loop
 """
-
+from dotenv import load_dotenv
+load_dotenv() 
 from fastapi import FastAPI, File, UploadFile, HTTPException, Header, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
@@ -35,6 +36,7 @@ from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_community.docstore.in_memory import InMemoryDocstore
 
 # OpenAI direct import
 from openai import OpenAI
@@ -61,6 +63,7 @@ VECTOR_STORE_DIR.mkdir(exist_ok=True)
 
 MONGO_URL = os.getenv("MONGO_URL", "mongodb+srv://hritickra99_db_user:wXx0JRLwX1Kq8GP4@cluster0.r1fszik.mongodb.net/?appName=Cluster0")
 OPENAI_API_KEY  = os.getenv("OPENAI_API_KEY", "")
+print("🔑 OPENAI_API_KEY")
 DB_NAME = "docblaze"
 
 if not OPENAI_API_KEY:
@@ -302,7 +305,7 @@ class VectorStoreManager:
             store = FAISS(
                 embedding_function=embeddings,
                 index=index,
-                docstore={},
+                docstore=InMemoryDocstore({}),
                 index_to_docstore_id={}
             )
 
@@ -435,6 +438,17 @@ class FeedbackResponse(BaseModel):
     rating: str
     timestamp: str
 
+class PaymentCodeRequest(BaseModel):
+    code: str
+
+class PaymentResponse(BaseModel):
+    success: bool
+    message: str
+    queries_remaining: Optional[int] = None
+
+DEMO_PAYMENT_CODE = "abcd123456789"
+FREE_QUERY_LIMIT = 5
+
 # ============================================================================
 # API ENDPOINTS
 # ============================================================================
@@ -518,6 +532,71 @@ async def create_session(
         last_active=session_doc['last_active'].isoformat(),
         document_count=0
     )
+
+@app.post("/api/users/verify-payment", response_model=PaymentResponse)
+async def verify_payment_code(
+    payment: PaymentCodeRequest,
+    user_id: str = Depends(verify_user_token)
+):
+    """Verify payment code and upgrade user to premium"""
+    
+    if payment.code.strip() == DEMO_PAYMENT_CODE:
+        # Upgrade user to premium
+        await users_collection.update_one(
+            {"user_id": user_id},
+            {
+                "$set": {
+                    "is_premium": True,
+                    "premium_activated_at": datetime.now(timezone.utc),
+                    "payment_code_used": payment.code
+                }
+            }
+        )
+        
+        return PaymentResponse(
+            success=True,
+            message="Payment successful! You now have unlimited queries.",
+            queries_remaining=None
+        )
+    else:
+        return PaymentResponse(
+            success=False,
+            message="Invalid payment code. Please try again.",
+            queries_remaining=None
+        )
+
+@app.get("/api/users/query-status")
+async def get_query_status(user_id: str = Depends(verify_user_token)):
+    """Get user's query limit status"""
+    
+    user = await users_collection.find_one({"user_id": user_id})
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    is_premium = user.get("is_premium", False)
+    
+    if is_premium:
+        return {
+            "is_premium": True,
+            "queries_used": 0,
+            "queries_remaining": None,
+            "limit_reached": False
+        }
+    
+    # Count total queries for this user
+    total_queries = await chat_history_collection.count_documents({"user_id": user_id})
+    
+    queries_remaining = max(0, FREE_QUERY_LIMIT - total_queries)
+    limit_reached = total_queries >= FREE_QUERY_LIMIT
+    
+    return {
+        "is_premium": False,
+        "queries_used": total_queries,
+        "queries_remaining": queries_remaining,
+        "limit_reached": limit_reached,
+        "free_limit": FREE_QUERY_LIMIT
+    }    
 
 @app.get("/api/sessions", response_model=List[SessionResponse])
 async def get_user_sessions(user_id: str = Depends(verify_user_token)):
@@ -651,6 +730,19 @@ async def query_documents(
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     
+     # 🔥 NEW: Check query limit for non-premium users
+    user = await users_collection.find_one({"user_id": user_id})
+    is_premium = user.get("is_premium", False)
+    
+    if not is_premium:
+        total_queries = await chat_history_collection.count_documents({"user_id": user_id})
+        
+        if total_queries >= FREE_QUERY_LIMIT:
+            raise HTTPException(
+                status_code=403, 
+                detail=f"Query limit reached. You have used {total_queries}/{FREE_QUERY_LIMIT} free queries. Please upgrade to continue."
+            )
+            
     # Auto-rename session on first query
     if session.get("session_name") == "New Session":
         auto_name = request.query.strip()[:60]
@@ -1153,6 +1245,41 @@ async def get_feedback_dashboard(
             }
             for chat in low_confidence
         ]
+    }
+    
+@app.delete("/api/sessions/{session_id}")
+async def delete_session(
+    session_id: str,
+    user_id: str = Depends(verify_user_token)
+):
+    """Delete a session and all associated data"""
+    
+    # Verify session belongs to user
+    session = await sessions_collection.find_one(
+        {"session_id": session_id, "user_id": user_id}
+    )
+    
+    if not session:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    # Delete associated documents from database
+    await documents_collection.delete_many({"session_id": session_id})
+    
+    # Delete chat history
+    await chat_history_collection.delete_many({"session_id": session_id})
+    
+    # Delete implicit signals
+    await db.implicit_signals.delete_many({"session_id": session_id})
+    
+    # Delete the session
+    await sessions_collection.delete_one({"session_id": session_id})
+    
+    # Note: Vector store cleanup would require more complex logic
+    # For now, we keep vectors (they'll be overwritten on new uploads)
+    
+    return {
+        "message": "Session deleted successfully",
+        "session_id": session_id
     }
     
 @app.get("/api/documents/{doc_id}/preview")
